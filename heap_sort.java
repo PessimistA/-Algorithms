@@ -57,7 +57,7 @@ class Heap1{
 }
 
 
-public class heap {
+public class heap_sort {
 	public static void main(String[] args) {
 		int[] array = {4,1,3,2,16,9,10,14,8,7};
 		Heap1  heap1 = new Heap1(array);
