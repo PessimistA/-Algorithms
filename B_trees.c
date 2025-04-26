@@ -442,54 +442,28 @@ int findMax(BTreeNode *node)
     return current->keys[current->n - 1];
 }
 
-BTreeNode *findParent(BTreeNode *root, BTreeNode *child)
+BTreeNode *findParent(BTreeNode *node, BTreeNode *child)
 {
-    if (root == NULL || child == NULL)
+    if (node == NULL || child == NULL || node == child)
     {
         return NULL;
     }
 
-    if (root == child)
+    BTreeNode *current = node;
+    while (current != NULL && !current->isLeaf)
     {
-        return NULL;
-    }
-    // Kuyruk oluştur
-    BTreeNode *queue[1000];
-    int front = 0, rear = 0;
-    queue[rear++] = root;
-
-    while (front < rear)
-    {
-        BTreeNode *current = queue[front++];
-
-        for (int i = 0; i <= current->n; i++)
+        for (int i = 0; i < current->n + 1; i++) // current->n + 1'e kadar kontrol etmeliyiz
         {
             if (current->children[i] == child)
             {
                 return current;
             }
-            if (current->children[i] != NULL)
-            {
-                queue[rear++] = current->children[i];
+            else{
+                current = current->children[i];
             }
         }
     }
     return NULL;
-}
-
-BTreeNode *searchNode(BTreeNode *node, int key)
-{
-    int i = 0;
-    while (i < node->n && key > node->keys[i])
-        i++;
-
-    if (i < node->n && node->keys[i] == key)
-        return node;
-
-    if (node->isLeaf)
-        return NULL;
-
-    return searchNode(node->children[i], key);
 }
 
 int findPredecessor(BTreeNode *root, int key)
